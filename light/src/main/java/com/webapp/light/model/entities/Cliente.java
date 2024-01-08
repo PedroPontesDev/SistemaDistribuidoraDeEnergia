@@ -19,11 +19,8 @@ public class Cliente extends Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, length = 30)
 	private String username;
-	@Column(nullable = false, length = 8)
 	private String password;
-	@Column(nullable = false, length = 30)
 	private String email;
 	
 	@OneToOne
@@ -32,6 +29,11 @@ public class Cliente extends Usuario {
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
 		super(id, username, password, email, endereco);	
 	}
+
+	public Cliente() {
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public String getUsername() {
 		return username;

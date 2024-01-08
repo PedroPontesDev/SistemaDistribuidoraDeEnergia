@@ -2,13 +2,31 @@ package com.webapp.light.model.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToOne;
+
+@MappedSuperclass
 public abstract class Usuario {
 
-	private Long id;
-	private String username;
-	private String password;
-	private String email;
-	private Endereco endereco;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 30)
+    private String username;
+
+    @Column(nullable = false, length = 8)
+    private String password;
+
+    @Column(nullable = false, length = 30)
+    private String email;
+
+    @OneToOne
+    private Endereco endereco;
 
 	public Usuario(Long id, String username, String password, String email, Endereco endereco) {
 		this.id = id;

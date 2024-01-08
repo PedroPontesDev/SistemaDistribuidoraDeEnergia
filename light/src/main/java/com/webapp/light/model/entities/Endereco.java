@@ -25,7 +25,7 @@ public class Endereco {
 	
 	private boolean temUmaConta;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "endereco")
 	private Cliente cliente;
 
 	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente) {
