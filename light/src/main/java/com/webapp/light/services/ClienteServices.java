@@ -1,6 +1,7 @@
 package com.webapp.light.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,40 +9,49 @@ import org.springframework.stereotype.Service;
 
 import com.webapp.light.model.DTOs.ClienteDTO;
 import com.webapp.light.model.entities.Cliente;
+import com.webapp.light.model.entities.Endereco;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ClienteRepository;
-
-import jakarta.transaction.Transactional;
+import com.webapp.light.repositories.EnderecoRepository;
 
 @Service
 public class ClienteServices {
 
-	@Autowired
-	ClienteRepository repository;
+    @Autowired
+    private ClienteRepository repository;
 
-	private Logger logger = Logger.getLogger(ClienteServices.class.getName());
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
-	public List<ClienteDTO> findAll() {
-		return MyMapper.parseListObjects(repository.findAll(), ClienteDTO.class);
-	}
+    private Logger logger = Logger.getLogger(ClienteServices.class.getName());
 
-	public ClienteDTO findById(Long id) {
-		var entity = repository.findById(id).orElseThrow(null);
+    public List<ClienteDTO> findAll() {
+        return MyMapper.parseListObjects(repository.findAll(), ClienteDTO.class);
+    }
 
-		return MyMapper.parseObject(entity, ClienteDTO.class);
+    public ClienteDTO findById(Long id) {
+        var entity = repository.findById(id).orElseThrow(() -> new RuntimeException("Cliente not found"));
+        return MyMapper.parseObject(entity, ClienteDTO.class);
+    }
 
-	}
-	
-	 @Transactional
-	    public ClienteDTO createCliente(ClienteDTO clienteDTO) {
-	        // Mapeio o ClienteDTO para a entidade Cliente
-	        Cliente clienteEntity = MyMapper.parseObject(clienteDTO, Cliente.class);
+    public ClienteDTO createCliente(ClienteDTO clienteDTO) {
+        logger.info("Creating PersonDTO!");
+        var entity = MyMapper.parseObject(clienteDTO, Cliente.class);
+        var dto = MyMapper.parseObject(repository.save(entity), ClienteDTO.class);
+        return dto;
+    }
 
-	        // Salve a entidade no banco de dados
-	        Cliente savedCliente = repository.save(clienteEntity);
-
-	        // Mapeio a entidade salva de volta para ClienteDTO e retorne
-	        return MyMapper.parseObject(savedCliente, ClienteDTO.class);
-	    }
-	}
-
+    public void associarEndereco(Long clientId, Endereco endereco) {
+        logger.info("Associating address!");
+        Optional<Cliente> clienteExistente = repository.findById(clientId);
+        if (clienteExistente.isPresent()) {
+            // Salve o novo endereço no banco de dados
+            enderecoRepository.save(endereco);
+            // Associe o novo endereço ao cliente existente
+            clienteExistente.get().setEndereco(endereco);
+            // Atualize o cliente no banco de dados para refletir a associação com o novo
+            // endereço
+            repository.save(clienteExistente.get());
+        }
+    }
+}

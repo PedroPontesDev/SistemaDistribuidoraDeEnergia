@@ -2,11 +2,14 @@ package com.webapp.light.model.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -18,22 +21,30 @@ public class Cliente extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
+	@Column(name = "username", nullable = true, length = 50)
 	private String username;
+	@Column(name = "password", nullable = true, length = 50)
 	private String password;
+	@Column(name = "email", nullable = true, length = 50)
 	private String email;
-	
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "endereco_id", nullable = false)
 	private Endereco endereco;
 
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
-		super(id, username, password, email, endereco);	
+		super(id, username, password, email, endereco);
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.endereco = endereco;
 	}
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
 	}
-
 
 	public String getUsername() {
 		return username;
@@ -96,11 +107,5 @@ public class Cliente extends Usuario {
 		return "Cliente [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", endereco=" + endereco + "]";
 	}
-	
-	
-	
-	
 
-	
-	
 }

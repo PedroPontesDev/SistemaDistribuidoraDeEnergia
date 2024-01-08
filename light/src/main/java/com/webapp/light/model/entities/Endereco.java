@@ -1,5 +1,7 @@
 package com.webapp.light.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +28,7 @@ public class Endereco {
 	private boolean temUmaConta;
 	
 	@OneToOne(mappedBy = "endereco")
+	@JsonIgnore
 	private Cliente cliente;
 
 	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente) {
