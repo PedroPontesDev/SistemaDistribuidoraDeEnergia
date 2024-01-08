@@ -7,27 +7,47 @@ import com.webapp.light.model.entities.Endereco;
 
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
-	private String nome;
+	private String username;
+	private String password;
+	private String email;
 	private Endereco endereco;
-	
-	public ClienteDTO(Long id, String nome, Endereco endereco) {
+
+	public ClienteDTO(Long id, String username, String password, String email, Endereco endereco) {
 		this.id = id;
-		this.nome = nome;
+		this.username = username;
+		this.password = password;
+		this.email = email;
 		this.endereco = endereco;
 	}
-	
+
 	public ClienteDTO() {
-		
+
 	}
 
-	public String getNome() {
-		return nome;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Endereco getEndereco() {
@@ -61,10 +81,9 @@ public class ClienteDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ClienteDTO [id=" + id + ", nome=" + nome + ", endereco=" + endereco + "]";
+		return "ClienteDTO [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
+				+ ", endereco=" + endereco + "]";
 	}
-	
-	
-	
+
 	
 }
