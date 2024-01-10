@@ -1,49 +1,27 @@
-package com.webapp.light.model.entities;
+package com.webapp.light.model.DTOs;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.webapp.light.model.entities.Cliente;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name = "tb_enderecos")
-public class Endereco {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EnderecoDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
-
-	@Column(nullable = false, length = 100)
 	private String rua;
-	@Column(nullable = false, length = 10)
 	private Integer numero;
-	@Column(nullable = true, length = 50)
 	private String complemento;
-
 	private boolean temUmaConta;
-
-	@OneToOne(mappedBy = "endereco")
-	@JsonIgnore
+	
 	private Cliente cliente;
-
-	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente) {
+	
+	public EnderecoDTO(Long id, String rua, Integer numero, String complemento, boolean temUmaConta) {
 		this.id = id;
 		this.rua = rua;
 		this.numero = numero;
 		this.complemento = complemento;
 		this.temUmaConta = temUmaConta;
-		this.cliente = cliente;
-	}
-
-	public Endereco() {
-
 	}
 
 	public String getRua() {
@@ -78,16 +56,16 @@ public class Endereco {
 		this.temUmaConta = temUmaConta;
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	@Override
@@ -103,14 +81,17 @@ public class Endereco {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Endereco other = (Endereco) obj;
+		EnderecoDTO other = (EnderecoDTO) obj;
 		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "Endereco [id=" + id + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento
-				+ ", temUmaConta=" + temUmaConta + ", cliente=" + cliente + "]";
+		return "EnderecoDTO [id=" + id + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento
+				+ ", temUmaConta=" + temUmaConta + "]";
 	}
+	
+	
 
+	
 }

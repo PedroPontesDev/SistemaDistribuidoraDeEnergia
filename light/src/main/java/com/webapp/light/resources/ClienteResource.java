@@ -36,9 +36,4 @@ public class ClienteResource {
 		return new ResponseEntity<>(createdCliente, HttpStatus.CREATED);
 	}
 	
-	 @PostMapping("/{clienteId}/associar-endereco")
-	    public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @RequestBody Endereco novoEndereco) {
-	        clienteService.associarEndereco(clienteId, novoEndereco);
-	        return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");
-	   }
 }

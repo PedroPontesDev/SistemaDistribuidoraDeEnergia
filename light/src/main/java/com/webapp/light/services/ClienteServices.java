@@ -17,41 +17,28 @@ import com.webapp.light.repositories.EnderecoRepository;
 @Service
 public class ClienteServices {
 
-    @Autowired
-    private ClienteRepository repository;
+	@Autowired
+	private ClienteRepository repository;
 
-    @Autowired
-    private EnderecoRepository enderecoRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
-    private Logger logger = Logger.getLogger(ClienteServices.class.getName());
+	private Logger logger = Logger.getLogger(ClienteServices.class.getName());
 
-    public List<ClienteDTO> findAll() {
-        return MyMapper.parseListObjects(repository.findAll(), ClienteDTO.class);
-    }
+	public List<ClienteDTO> findAll() {
+		return MyMapper.parseListObjects(repository.findAll(), ClienteDTO.class);
+	}
 
-    public ClienteDTO findById(Long id) {
-        var entity = repository.findById(id).orElseThrow(() -> new RuntimeException("Cliente not found"));
-        return MyMapper.parseObject(entity, ClienteDTO.class);
-    }
+	public ClienteDTO findById(Long id) {
+		var entity = repository.findById(id).orElseThrow(() -> new RuntimeException("Cliente not found"));
+		return MyMapper.parseObject(entity, ClienteDTO.class);
+	}
 
-    public ClienteDTO createCliente(ClienteDTO clienteDTO) {
-        logger.info("Creating PersonDTO!");
-        var entity = MyMapper.parseObject(clienteDTO, Cliente.class);
-        var dto = MyMapper.parseObject(repository.save(entity), ClienteDTO.class);
-        return dto;
-    }
+	public ClienteDTO createCliente(ClienteDTO clienteDTO) {
+		logger.info("Creating PersonDTO!");
+		var entity = MyMapper.parseObject(clienteDTO, Cliente.class);
+		var dto = MyMapper.parseObject(repository.save(entity), ClienteDTO.class);
+		return dto;
+	}
 
-    public void associarEndereco(Long clientId, Endereco endereco) {
-        logger.info("Associating address!");
-        Optional<Cliente> clienteExistente = repository.findById(clientId);
-        if (clienteExistente.isPresent()) {
-            // Salve o novo endereço no banco de dados
-            enderecoRepository.save(endereco);
-            // Associe o novo endereço ao cliente existente
-            clienteExistente.get().setEndereco(endereco);
-            // Atualize o cliente no banco de dados para refletir a associação com o novo
-            // endereço
-            repository.save(clienteExistente.get());
-        }
-    }
 }
