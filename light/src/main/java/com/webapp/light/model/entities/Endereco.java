@@ -29,8 +29,6 @@ public class Endereco {
 	private String complemento;
 
 	private boolean temUmaConta;
-
-	@JsonIgnore
 	@OneToOne(mappedBy = "endereco")
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;

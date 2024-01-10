@@ -39,8 +39,8 @@ public class ClienteResource {
 	}
 	
 	@PutMapping (path = "/atualizarCadastro")
-	public ClienteDTO updatePersonDTO(@RequestBody ClienteDTO  clienteDTO)  {
-		return clienteService.updateCliente(clienteDTO);
+	public ResponseEntity<ClienteDTO> updatePersonDTO(@RequestBody ClienteDTO  clienteDTO) throws Exception  {
+		return ResponseEntity.ok().body(clienteDTO);
 	}
 	
 	@DeleteMapping(value = "/deletarCadastro")
