@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -29,8 +30,9 @@ public class Endereco {
 
 	private boolean temUmaConta;
 
-	@OneToOne(mappedBy = "endereco")
 	@JsonIgnore
+	@OneToOne(mappedBy = "endereco")
+	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 
 	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente) {
