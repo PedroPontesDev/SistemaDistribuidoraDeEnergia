@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,21 +38,34 @@ public class EnderecoResource {
 
 	}
 
+	@GetMapping(path = "/proucar/{rua}/{numero}")
+	public ResponseEntity<ClienteDTO> findByRuaAndNumero(@PathVariable String rua, @PathVariable Integer numero) {
+		var end = enderecoService.findByEndereco(rua, numero);
+		return new ResponseEntity<>(end, HttpStatus.OK);
+	}
+
 	@PostMapping(path = "/cadastrarEndereco")
 	public ResponseEntity<EnderecoDTO> createEndereco(@RequestBody EnderecoDTO enderecoDTO) {
 		EnderecoDTO createdEndereco = enderecoService.createEndereco(enderecoDTO);
 		return new ResponseEntity<>(createdEndereco, HttpStatus.CREATED);
 	}
+	
+	@PutMapping("/atualizarEndereco")
+	public ResponseEntity<EnderecoDTO> updateEndereco(@RequestBody EnderecoDTO enderecoDTO) throws Exception {
+		var end = enderecoService.updateEndereco(enderecoDTO);
+		return ResponseEntity.ok().body(end);
+	}
 
-	@PostMapping("{clienteId}/associar-endereco")
+
+	@PutMapping("{clienteId}/associar-endereco")
 	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @RequestBody Endereco novoEndereco) {
 		enderecoService.associarEndereco(clienteId, novoEndereco);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");
 	}
 	
-	@GetMapping(path = "/proucar/{rua}/{numero}")
-	public ResponseEntity<ClienteDTO> findByRuaAndNumero(@PathVariable String rua, @PathVariable Integer numero) {
-		var end = enderecoService.findByEndereco(rua, numero);
-		return new ResponseEntity<>(end, HttpStatus.OK);
+	@DeleteMapping(path = "{id}/deletarEndereco")
+     public ResponseEntity<?>deletePersonDTO(@PathVariable Long id)  {
+		enderecoService.delete(id);
+	    return ResponseEntity.ok("Deletado com succeso");
 	}
 }

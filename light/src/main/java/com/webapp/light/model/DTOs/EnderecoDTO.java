@@ -23,6 +23,10 @@ public class EnderecoDTO implements Serializable{
 		this.complemento = complemento;
 		this.temUmaConta = temUmaConta;
 	}
+	
+	public EnderecoDTO() {
+		
+	}
 
 	public String getRua() {
 		return rua;

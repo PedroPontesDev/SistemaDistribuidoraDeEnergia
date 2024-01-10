@@ -55,7 +55,7 @@ public class EnderecoServices {
 		return dto;
 	}
 
-	public EnderecoDTO updateEndereco(EnderecoDTO dto) {
+	public EnderecoDTO updateEndereco(EnderecoDTO dto) throws Exception {
 		logger.info("Update EnderecoDTO!");
 		var entidade = repository.findById(dto.getId());
 		if (entidade.isPresent()) {
@@ -64,12 +64,11 @@ public class EnderecoServices {
 			entidade.get().setNumero(dto.getNumero());
 			entidade.get().setTemUmaConta(dto.isTemUmaConta());
 			entidade.get().setComplemento(dto.getComplemento());
+			repository.save(entidade.get());
 			var dtoo = MyMapper.parseObject(entidade, EnderecoDTO.class);
 			return dtoo;
-
 		}
-		return null;
-
+		throw new Exception("Error!");
 	}
 
 	public void associarEndereco(Long clientId, Endereco endereco) {
@@ -77,11 +76,16 @@ public class EnderecoServices {
 		Optional<Cliente> clienteExistente = clienteRepository.findById(clientId);
 		if (clienteExistente.isPresent()) {
 			// Salvo o novo endereço no banco de dados
-		  	repository.save(endereco);
-			// Associe o novo endereço ao cliente existente
+			repository.save(endereco);
+			// Associo o novo endereço ao cliente existente
 			clienteExistente.get().setEndereco(endereco);
-			// Atualize o cliente no banco de dados para refletir a associação com o novo endereço
+			// Atualizo o cliente no banco de dados para refletir a associação com o novo endereço
 			clienteRepository.save(clienteExistente.get());
 		}
+	}
+
+	public void delete(Long id) {
+		var entity = repository.findById(id);
+		repository.delete(entity.get());
 	}
 }
