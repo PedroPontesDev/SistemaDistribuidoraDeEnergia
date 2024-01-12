@@ -1,8 +1,11 @@
 package com.webapp.light.model.DTOs;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.entities.Endereco;
 
 public class ClienteDTO implements Serializable {
@@ -85,5 +88,4 @@ public class ClienteDTO implements Serializable {
 				+ ", endereco=" + endereco + "]";
 	}
 
-	
 }

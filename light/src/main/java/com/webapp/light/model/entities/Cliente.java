@@ -32,25 +32,20 @@ public class Cliente extends Usuario {
 	@Column(name = "email", nullable = true, length = 50)
 	private String email;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JsonIgnore
 	private Endereco endereco;
-	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-	private Set<Conta> contas = new HashSet<>();
 
-	public Cliente(Long id, String username, String password, String email, Endereco endereco, Set<Conta> contas) {
+	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
 		super(id, username, password, email, endereco);
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.endereco = endereco;
-		this.contas = contas;
 	}
 
 	public Cliente() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getUsername() {

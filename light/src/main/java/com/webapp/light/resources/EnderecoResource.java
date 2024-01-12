@@ -31,7 +31,7 @@ public class EnderecoResource {
 	@Autowired
 	EnderecoServices enderecoService;
 
-	@GetMapping
+	@GetMapping(path = "/")
 	public ResponseEntity<List<EnderecoDTO>> findAllEnderecos() {
 		List<EnderecoDTO> all = enderecoService.findAll();
 		return ResponseEntity.ok().body(all);
@@ -57,7 +57,7 @@ public class EnderecoResource {
 	}
 
 
-	@PutMapping("{clienteId}/associar-endereco")
+	@PostMapping("{clienteId}/associar-endereco")
 	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @RequestBody Endereco novoEndereco) {
 		enderecoService.associarEndereco(clienteId, novoEndereco);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");

@@ -4,12 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.webapp.light.services.Counter;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,35 +25,26 @@ public class Conta implements Serializable  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Cliente cliente;
 	
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataDeVencimento;
-	private Double price;
 	private boolean estaEmAberto;
-	
-	@Autowired
-	private Counter counter;
-	
-	public Conta(Long id, Cliente cliente, LocalDate dataDeVencimento, Double price, boolean estaEmAberto) {
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "conta")
+	private Endereco endereco;
+
+	public Conta(Long id, Cliente cliente, LocalDate dataDeVencimento, boolean estaEmAberto, Endereco endereco) {
       	this.id = id;
-		this.cliente = cliente;
 		this.dataDeVencimento = dataDeVencimento;
-		this.price = price;
 		this.estaEmAberto = estaEmAberto;
+		this.endereco = endereco;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Conta() {
+		
 	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
+	
 	public LocalDate getDataDeVencimento() {
 		return dataDeVencimento;
 	}
@@ -63,31 +52,14 @@ public class Conta implements Serializable  {
 	public void setDataDeVencimento(LocalDate dataDeVencimento) {
 		this.dataDeVencimento = dataDeVencimento;
 	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public boolean isEstaEmAberto() {
+	public boolean EstaEmAberto() {
 		return estaEmAberto;
 	}
 
 	public void setEstaEmAberto(boolean estaEmAberto) {
 		this.estaEmAberto = estaEmAberto;
 	}
-
-	public Counter getCounter() {
-		return counter;
-	}
-
-	public void setCounter(Counter counter) {
-		this.counter = counter;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -111,10 +83,19 @@ public class Conta implements Serializable  {
 
 	@Override
 	public String toString() {
-		return "Conta [id=" + id + ", cliente=" + cliente + ", dataDeVencimento=" + dataDeVencimento + ", price="
-				+ price + ", estaEmAberto=" + estaEmAberto + ", counter=" + counter + "]";
+		return "Conta [id=" + id + ", dataDeVencimento=" + dataDeVencimento + ", estaEmAberto="
+				+ estaEmAberto + ", contador=" + "]";
 	}
-	
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+
 	
 	
 	

@@ -5,10 +5,13 @@ import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.core.support.RepositoryComposition;
 import org.springframework.stereotype.Service;
 
 import com.webapp.light.model.DTOs.ClienteDTO;
+import com.webapp.light.model.DTOs.ContaDTO;
 import com.webapp.light.model.entities.Cliente;
+import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ClienteRepository;
 
@@ -59,6 +62,18 @@ public class ClienteServices {
 		if (entity != null) {
            repository.delete(entity.get());
 		}
+	}
+	
+	public void associarContaAcliente(Long id, ContaDTO contaDTO) throws Exception {
+		var entidadeConta = MyMapper.parseObject(contaDTO, Conta.class);
+		var cliente = repository.findById(id);
+        if(cliente.isPresent() && entidadeConta != null) {
+        	cliente.get().getEndereco().setConta(entidadeConta);
+        	repository.save(cliente.get());
+        } else {
+        	throw new Exception("Algo deu errado!");
+        }
+		
 	}
 
 }

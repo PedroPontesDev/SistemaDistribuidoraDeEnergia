@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.webapp.light.model.entities.Cliente;
+import com.webapp.light.model.entities.Conta;
 
 public class EnderecoDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -15,6 +16,7 @@ public class EnderecoDTO implements Serializable{
 	private boolean temUmaConta;
 	
 	private Cliente cliente;
+	private Conta conta;
 	
 	public EnderecoDTO(Long id, String rua, Integer numero, String complemento, boolean temUmaConta) {
 		this.id = id;
@@ -93,6 +95,14 @@ public class EnderecoDTO implements Serializable{
 	public String toString() {
 		return "EnderecoDTO [id=" + id + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento
 				+ ", temUmaConta=" + temUmaConta + "]";
+	}
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 	
 	
