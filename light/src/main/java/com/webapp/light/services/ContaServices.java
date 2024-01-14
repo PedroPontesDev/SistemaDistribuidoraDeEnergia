@@ -1,29 +1,34 @@
 package com.webapp.light.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webapp.light.model.DTOs.ContaDTO;
-import com.webapp.light.model.entities.Cliente;
 import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ClienteRepository;
 import com.webapp.light.repositories.ContaRepository;
+import com.webapp.light.repositories.MedidorRepository;
 
 @Service
 public class ContaServices {
 
 	@Autowired
 	private ContaRepository repository;
-
+	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private MedidorRepository medidorRepository;
 
+	
+	
 	private Logger logger = Logger.getLogger(ContaServices.class.getName());
 
 	public List<ContaDTO> findAll() {
@@ -64,5 +69,32 @@ public class ContaServices {
 		}
 	}
 
+	public ContaDTO associarContaAcliente(Long id, ContaDTO contaDTO) throws Exception {
+		logger.info("Associting Conta TO Cliente");
+		var entidadeConta = MyMapper.parseObject(contaDTO, Conta.class);
+		var cliente = repository.findById(id);
+		if (cliente.isPresent() && entidadeConta != null) {
+			cliente.get().getEndereco().setConta(entidadeConta);
+			repository.save(cliente.get());
+			repository.save(entidadeConta);
+			var dto = MyMapper.parseObject(entidadeConta, ContaDTO.class);
+			return dto;
+		} else {
+			throw new Exception("Algo deu errado!");
+		}
+	}
+	
+	public ContaDTO calcularJurosConta() {
+		return null;
+	}
+	
+	public ContaDTO restaurarHistoricoConta() {
+		return null;
+	}
+	
+	public ContaDTO fecharContaEmAberto() {
+		return null;
+	}
+	
 
 }

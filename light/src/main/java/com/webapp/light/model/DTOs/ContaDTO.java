@@ -13,27 +13,18 @@ public class ContaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Cliente cliente;
 	private boolean estaEmAberto;
-	private MedidorEnergia contador;
 	private Endereco endereco;
-	
+	private Double precoTotal;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataDeVencimento;
 
-	public ContaDTO(Long id, Cliente cliente, LocalDate dataDeVencimento, boolean estaEmAberto) {
+	public ContaDTO(Long id, LocalDate dataDeVencimento, boolean estaEmAberto, Double precoTotal) {
 		this.id = id;
-		this.cliente = cliente;
 		this.dataDeVencimento = dataDeVencimento;
 		this.estaEmAberto = estaEmAberto;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+		this.precoTotal = precoTotal;
 	}
 
 	public LocalDate getDataDeVencimento() {
@@ -55,7 +46,6 @@ public class ContaDTO implements Serializable {
 	public Long getId() {
 		return id;
 	}
-	
 
 	public Endereco getEndereco() {
 		return endereco;
@@ -65,14 +55,13 @@ public class ContaDTO implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public MedidorEnergia getContador() {
-		return contador;
+	public Double getPrecoTotal() {
+		return precoTotal;
 	}
 
-	public void setContador(MedidorEnergia contador) {
-		this.contador = contador;
+	public void setPrecoTotal(Double precoTotal) {
+		this.precoTotal = precoTotal;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -93,8 +82,7 @@ public class ContaDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ContaDTO [id=" + id + ", cliente=" + cliente + ", dataDeVencimento=" + dataDeVencimento
-				+ ", estaEmAberto=" + estaEmAberto + ", contador=" + contador + "]";
+		return "ContaDTO [id=" + id + ", dataDeVencimento=" + dataDeVencimento + ", estaEmAberto=" + estaEmAberto;
 	}
-	
+
 }

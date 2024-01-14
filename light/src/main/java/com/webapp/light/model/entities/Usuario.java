@@ -2,6 +2,7 @@ package com.webapp.light.model.entities;
 
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,21 +13,20 @@ import jakarta.persistence.OneToOne;
 @MappedSuperclass
 public abstract class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(nullable = false, length = 30)
-    private String username;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "username", nullable = true, length = 50)
+	private String username;
+	@Column(name = "password", nullable = true, length = 50)
+	private String password;
+	@Column(name = "email", nullable = true, length = 50)
+	private String email;
 
-    @Column(nullable = false, length = 8)
-    private String password;
-
-    @Column(nullable = false, length = 30)
-    private String email;
-
-    @OneToOne
-    private Endereco endereco;
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+	private Endereco endereco;
 
 	public Usuario(Long id, String username, String password, String email, Endereco endereco) {
 		this.id = id;
@@ -98,8 +98,5 @@ public abstract class Usuario {
 		return "Usuario [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
 				+ ", endereco=" + endereco + "]";
 	}
-	
-	
-	
 
 }

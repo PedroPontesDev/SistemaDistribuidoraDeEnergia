@@ -1,8 +1,6 @@
 package com.webapp.light.model.entities;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,7 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -32,8 +30,7 @@ public class Cliente extends Usuario {
 	@Column(name = "email", nullable = true, length = 50)
 	private String email;
 
-	@OneToOne
-	@JsonIgnore
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private Endereco endereco;
 
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,21 +32,19 @@ public class Endereco {
 	@Column(nullable = true, length = 50)
 	private String complemento;
 
-	@OneToOne(mappedBy = "endereco")
-	@JoinColumn(name = "cliente_id")
+	@OneToOne(cascade = CascadeType.ALL)
 	private Cliente cliente;
 
-	@OneToOne
-	@JoinColumn(name = "contador_id")
-	MedidorEnergia medidor;
+	@OneToOne(mappedBy = "endereco", cascade = CascadeType.ALL)
+	private MedidorEnergia medidor;
 
-	@JsonIgnore
-	@OneToOne
-	Conta conta;
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Conta conta;
+
 	private boolean temUmaConta;
 
-	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente, Conta conta) {
+	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente,
+			Conta conta) {
 		this.id = id;
 		this.rua = rua;
 		this.numero = numero;
@@ -94,7 +93,6 @@ public class Endereco {
 	public boolean temUmaConta() {
 		return temUmaConta;
 	}
-	
 
 	public Conta getConta() {
 		return conta;
@@ -111,6 +109,7 @@ public class Endereco {
 	public Cliente getCliente() {
 		return cliente;
 	}
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}

@@ -10,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -30,8 +29,7 @@ public class MedidorEnergia implements Serializable {
     @Column
     private Double totalPrecoPorHora;
 	
-	@OneToOne(mappedBy = "medidor")
-	@JsonIgnore
+	@OneToOne
     private Endereco endereco;
 
 	
@@ -86,10 +84,5 @@ public class MedidorEnergia implements Serializable {
 		MedidorEnergia other = (MedidorEnergia) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
-	
-	
 	
 }

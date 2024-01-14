@@ -1,6 +1,7 @@
 package com.webapp.light.resources;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp.light.model.DTOs.ContaDTO;
-
+import com.webapp.light.model.entities.Cliente;
+import com.webapp.light.services.ClienteServices;
 import com.webapp.light.services.ContaServices;
 
 @RestController
@@ -25,6 +27,9 @@ public class ContaResource {
 
 	@Autowired
 	ContaServices contaService;
+	
+	@Autowired
+	ClienteServices clienteServices;
 
 	@GetMapping
 	public ResponseEntity<List<ContaDTO>> findAllContas() {
@@ -39,6 +44,12 @@ public class ContaResource {
 		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 	
+	@PostMapping(path = "/cliente/{id}/associarConta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
+	public ResponseEntity<ContaDTO> associarContaCliente(@PathVariable Long id, ContaDTO conta) throws Exception {
+            ContaDTO entity = contaService.associarContaAcliente(id, conta);
+            return ResponseEntity.ok().body(entity);
+	}
+	
 	@PutMapping (path = "/atualizarConta")
 	public ResponseEntity<ContaDTO> atualizarConta(@RequestBody ContaDTO  contaDTO) throws Exception  {
 		return ResponseEntity.ok().body(contaDTO);
@@ -49,4 +60,19 @@ public class ContaResource {
 		contaService.delete(id);
 	    return ResponseEntity.noContent().build();
 	}
+	
+	public ResponseEntity<ContaDTO> recuperarHistoricoConta() {
+		return null;
+	}
+	
+	public ResponseEntity<ContaDTO> calcularJurosConta() {
+		return null;
+	}
+	
+	public ResponseEntity<ContaDTO> fecharContaEmAberto() {
+		return null;
+	}
+	
+	
+	
 }

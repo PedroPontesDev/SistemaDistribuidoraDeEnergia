@@ -64,16 +64,5 @@ public class ClienteServices {
 		}
 	}
 	
-	public void associarContaAcliente(Long id, ContaDTO contaDTO) throws Exception {
-		var entidadeConta = MyMapper.parseObject(contaDTO, Conta.class);
-		var cliente = repository.findById(id);
-        if(cliente.isPresent() && entidadeConta != null) {
-        	cliente.get().getEndereco().setConta(entidadeConta);
-        	repository.save(cliente.get());
-        } else {
-        	throw new Exception("Algo deu errado!");
-        }
-		
-	}
 
 }

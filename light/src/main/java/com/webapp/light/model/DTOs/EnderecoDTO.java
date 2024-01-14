@@ -5,29 +5,35 @@ import java.util.Objects;
 
 import com.webapp.light.model.entities.Cliente;
 import com.webapp.light.model.entities.Conta;
+import com.webapp.light.model.entities.MedidorEnergia;
 
-public class EnderecoDTO implements Serializable{
+public class EnderecoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String rua;
 	private Integer numero;
 	private String complemento;
 	private boolean temUmaConta;
-	
+
 	private Cliente cliente;
 	private Conta conta;
-	
-	public EnderecoDTO(Long id, String rua, Integer numero, String complemento, boolean temUmaConta) {
+	private MedidorEnergia medidor;
+
+	public EnderecoDTO(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente,
+			Conta conta, MedidorEnergia medidor) {
 		this.id = id;
 		this.rua = rua;
 		this.numero = numero;
 		this.complemento = complemento;
 		this.temUmaConta = temUmaConta;
+		this.cliente = cliente;
+		this.conta = conta;
+		this.medidor = medidor;
 	}
-	
+
 	public EnderecoDTO() {
-		
+
 	}
 
 	public String getRua() {
@@ -65,13 +71,21 @@ public class EnderecoDTO implements Serializable{
 	public Long getId() {
 		return id;
 	}
-	
+
 	public Cliente getCliente() {
 		return cliente;
 	}
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public MedidorEnergia getMedidor() {
+		return medidor;
+	}
+
+	public void setMedidor(MedidorEnergia medidor) {
+		this.medidor = medidor;
 	}
 
 	@Override
@@ -104,8 +118,5 @@ public class EnderecoDTO implements Serializable{
 	public void setConta(Conta conta) {
 		this.conta = conta;
 	}
-	
-	
 
-	
 }

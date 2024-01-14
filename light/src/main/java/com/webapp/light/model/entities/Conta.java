@@ -9,42 +9,46 @@ import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_contas")
-public class Conta implements Serializable  {
+public class Conta implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataDeVencimento;
 	private boolean estaEmAberto;
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "conta")
+	@Column
+	private Double precoTotal;
+	
+	@OneToOne(mappedBy = "conta", cascade = CascadeType.ALL)
 	private Endereco endereco;
 
-	public Conta(Long id, Cliente cliente, LocalDate dataDeVencimento, boolean estaEmAberto, Endereco endereco) {
-      	this.id = id;
+	public Conta(Long id, LocalDate dataDeVencimento, boolean estaEmAberto, Endereco endereco, Double precoTotal) {
+		this.id = id;
 		this.dataDeVencimento = dataDeVencimento;
 		this.estaEmAberto = estaEmAberto;
 		this.endereco = endereco;
+		this.precoTotal = precoTotal;
 	}
 
 	public Conta() {
-		
+
 	}
-	
+
 	public LocalDate getDataDeVencimento() {
 		return dataDeVencimento;
 	}
@@ -52,6 +56,7 @@ public class Conta implements Serializable  {
 	public void setDataDeVencimento(LocalDate dataDeVencimento) {
 		this.dataDeVencimento = dataDeVencimento;
 	}
+
 	public boolean EstaEmAberto() {
 		return estaEmAberto;
 	}
@@ -59,9 +64,17 @@ public class Conta implements Serializable  {
 	public void setEstaEmAberto(boolean estaEmAberto) {
 		this.estaEmAberto = estaEmAberto;
 	}
-	
+
 	public Long getId() {
 		return id;
+	}
+
+	public Double getPrecoTotal() {
+		return precoTotal;
+	}
+
+	public void setPrecoTotal(Double precoTotal) {
+		this.precoTotal = precoTotal;
 	}
 
 	@Override
@@ -83,8 +96,8 @@ public class Conta implements Serializable  {
 
 	@Override
 	public String toString() {
-		return "Conta [id=" + id + ", dataDeVencimento=" + dataDeVencimento + ", estaEmAberto="
-				+ estaEmAberto + ", contador=" + "]";
+		return "Conta [id=" + id + ", dataDeVencimento=" + dataDeVencimento + ", estaEmAberto=" + estaEmAberto
+				+ ", contador=" + "]";
 	}
 
 	public Endereco getEndereco() {
@@ -95,11 +108,4 @@ public class Conta implements Serializable  {
 		this.endereco = endereco;
 	}
 
-
-	
-	
-	
-	
-	
-	
 }
