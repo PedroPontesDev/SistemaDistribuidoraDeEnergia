@@ -45,9 +45,9 @@ public class ContaResource {
 	}
 	
 	@PostMapping(path = "/cliente/{id}/associarConta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
-	public ResponseEntity<ContaDTO> associarContaCliente(@PathVariable Long id, ContaDTO conta) throws Exception {
-            ContaDTO entity = contaService.associarContaAendereco(id, conta);
-            return ResponseEntity.ok().body(entity);
+	public ResponseEntity<String> associarContaCliente(@PathVariable Long id, Long contaId) throws Exception {
+            contaService.associarContaAendereco(id, contaId);
+            return ResponseEntity.ok("Nova conta associada a endereco com sucesso!");
 	}
 	
 	@PutMapping (path = "/atualizarConta")

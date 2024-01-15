@@ -34,6 +34,7 @@ public class Endereco {
 
 	
 	@OneToOne
+	@JsonIgnore
 	private Cliente cliente;
 
 	@OneToOne

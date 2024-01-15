@@ -14,7 +14,6 @@ public class ContaDTO implements Serializable {
 
 	private Long id;
 	private boolean estaEmAberto;
-	private Endereco endereco;
 	private Double precoTotal;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -51,14 +50,6 @@ public class ContaDTO implements Serializable {
 		return id;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
 	public Double getPrecoTotal() {
 		return precoTotal;
 	}
@@ -66,6 +57,8 @@ public class ContaDTO implements Serializable {
 	public void setPrecoTotal(Double precoTotal) {
 		this.precoTotal = precoTotal;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

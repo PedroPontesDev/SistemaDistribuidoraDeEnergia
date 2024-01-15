@@ -57,7 +57,7 @@ public class EnderecoResource {
 	}
 
 
-	@PostMapping("{clienteId}/associar-endereco")
+	@PostMapping("{clienteId}/{enderecoId}/associar-endereco/")
 	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @PathVariable Long enderecoId) throws Exception {
 		enderecoService.associarEndereco(clienteId, enderecoId);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");

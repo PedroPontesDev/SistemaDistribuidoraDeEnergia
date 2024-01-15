@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.webapp.light.model.DTOs.ContaDTO;
 import com.webapp.light.model.entities.Conta;
+import com.webapp.light.model.entities.Endereco;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ContaRepository;
 import com.webapp.light.repositories.EnderecoRepository;
@@ -54,7 +55,6 @@ public class ContaServices {
 		logger.info("Updating Conta");
 		try {
 			var entity = repository.findById(conta.getId()); // Atualizo
-			entity.get().setEndereco(conta.getEndereco());
 			entity.get().setDataDeVencimento(conta.getDataDeVencimento());
 			repository.save(entity.get()); // Salvo
 			return MyMapper.parseObject(entity, ContaDTO.class); // Converto e retorno
@@ -72,16 +72,16 @@ public class ContaServices {
 		}
 	}
 
-	public ContaDTO associarContaAendereco(Long enderecoId, ContaDTO contaDTO) throws Exception {
+	public void associarContaAendereco(Long enderecoId, Long contaId) throws Exception {
 		logger.info("Associting Conta TO Cliente");
-		var entidadeConta = MyMapper.parseObject(contaDTO, Conta.class);
+		var entidadeConta = repository.findById(contaId);
 		var endereco = enderecoRepository.findById(enderecoId);
-		if (endereco.isPresent() && entidadeConta != null) {
-		    endereco.get().setConta(entidadeConta);
-			enderecoRepository.save(endereco.get());
-			repository.save(entidadeConta);
-			var dto = MyMapper.parseObject(entidadeConta, ContaDTO.class);
-			return dto;
+		if (endereco.isPresent() && entidadeConta.isPresent()) {
+		   Endereco enderecos = endereco.get();
+		   Conta conta = entidadeConta.get();
+		   enderecos.setConta(conta);
+		   enderecoRepository.save(enderecos);
+		   repository.save(conta);
 		} else {
 			throw new Exception("Algo deu errado!");
 		}
@@ -89,13 +89,10 @@ public class ContaServices {
 	public ContaDTO calcularJurosConta(Long medidorId, Long contaId) {
         var medidorOptional = medidorRepository.findById(medidorId);
         var contaOptional = repository.findById(contaId);
-
         if (medidorOptional.isPresent() && contaOptional.isPresent()) {
             var medidor = medidorOptional.get();
             var conta = contaOptional.get();
-
-            if (conta.getDataDeVencimento().isBefore(currentDate)) {
-                // Calcula a diferença em dias usando ChronoUnit
+            if (conta.getDataDeVencimento().isAfter(currentDate)) {
                 long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), currentDate);
 
                 // Aplica uma taxa de juros de 1% ao dia

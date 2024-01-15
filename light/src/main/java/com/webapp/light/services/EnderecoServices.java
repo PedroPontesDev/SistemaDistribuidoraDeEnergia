@@ -83,7 +83,9 @@ public class EnderecoServices {
 					throw new Exception("Endereço já associado a um cliente");
 				}
 				cliente.setEndereco(endereco);
+				endereco.setCliente(cliente);
 				clienteRepository.save(cliente);
+                repository.save(endereco);
 				logger.info("Cliente associado com sucesso!");
 
 			} catch (Exception e) {

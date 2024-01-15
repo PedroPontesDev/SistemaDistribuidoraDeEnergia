@@ -26,9 +26,6 @@ public class MedidorResource {
 	@Autowired
 	MedidorServices medidorService;
 
-	@Autowired
-	ContaServices contaServices;
-
 	@GetMapping(path = "/")
 	public ResponseEntity<List<MedidorDTO>> findAllClientes() {
 		List<MedidorDTO> all;
@@ -60,8 +57,7 @@ public class MedidorResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	public ResponseEntity<ContaDTO> associarMedidorEndereco(@PathVariable Long enderecoId,
-			@RequestBody MedidorDTO medidor) {
+	public ResponseEntity<ContaDTO> associarMedidorEndereco(@PathVariable Long enderecoId, 	@PathVariable Long medidorId) {
 		return null;
 	}
 

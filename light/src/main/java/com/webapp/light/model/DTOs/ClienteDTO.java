@@ -16,17 +16,13 @@ public class ClienteDTO implements Serializable {
 	private String password;
 	private String email;
 	private Endereco endereco;
-	
-	private Conta conta;
-	
 
-	public ClienteDTO(Long id, String username, String password, String email, Endereco endereco, Conta conta) {
+	public ClienteDTO(Long id, String username, String password, String email, Endereco endereco) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.endereco = endereco;
-		this.conta = conta;
 	}
 
 	public ClienteDTO() {
@@ -35,12 +31,6 @@ public class ClienteDTO implements Serializable {
 
 	public String getUsername() {
 		return username;
-	}
-
-	
-	
-	public Conta getConta() {
-		return conta;
 	}
 
 	public void setUsername(String username) {
@@ -74,6 +64,12 @@ public class ClienteDTO implements Serializable {
 	public Long getId() {
 		return id;
 	}
+	
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 
 	@Override
 	public int hashCode() {
