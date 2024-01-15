@@ -84,8 +84,10 @@ public class MedidorServices {
 			medidor.setEndereco(endereco.get());
 			medidor.setPreco(preco);
 			medidor.setHora(hora);
-			Double calculo = preco / hora;
+			Double calculo = preco + hora;
 			medidor.setTotalPrecoPorHora(calculo);
+		    var entity = MyMapper.parseObject(medidor, MedidorEnergia.class);
+		    repository.save(entity);
 			return medidor;
 		} else {
 			throw new Exception("Algo deu errado!");

@@ -29,7 +29,7 @@ public class MedidorEnergia implements Serializable {
     @Column
     private Double totalPrecoPorHora;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "medidor")
     private Endereco endereco;
 
 	
@@ -40,6 +40,10 @@ public class MedidorEnergia implements Serializable {
 		this.hora = hora;
 	}
 
+	public MedidorEnergia() {
+		
+	}
+	
 	public Endereco getEndereco() {
 		return endereco;
 	}
@@ -66,6 +70,15 @@ public class MedidorEnergia implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+	
+
+	public Double getTotalPrecoPorHora() {
+		return totalPrecoPorHora;
+	}
+
+	public void setTotalPrecoPorHora(Double totalPrecoPorHora) {
+		this.totalPrecoPorHora = totalPrecoPorHora;
 	}
 
 	@Override

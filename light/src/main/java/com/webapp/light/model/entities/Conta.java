@@ -34,7 +34,7 @@ public class Conta implements Serializable {
 	@Column
 	private Double precoTotal;
 	
-	@OneToOne(mappedBy = "conta", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "conta")
 	private Endereco endereco;
 
 	public Conta(Long id, LocalDate dataDeVencimento, boolean estaEmAberto, Endereco endereco, Double precoTotal) {

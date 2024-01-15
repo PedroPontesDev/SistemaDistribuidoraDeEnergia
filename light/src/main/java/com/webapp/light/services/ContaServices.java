@@ -1,18 +1,20 @@
 package com.webapp.light.services;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.webapp.light.model.DTOs.ContaDTO;
 import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.mapper.MyMapper;
-import com.webapp.light.repositories.ClienteRepository;
 import com.webapp.light.repositories.ContaRepository;
+import com.webapp.light.repositories.EnderecoRepository;
 import com.webapp.light.repositories.MedidorRepository;
 
 @Service
@@ -20,15 +22,16 @@ public class ContaServices {
 
 	@Autowired
 	private ContaRepository repository;
-	
-	@Autowired
-	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private MedidorRepository medidorRepository;
+	
+	@Autowired
+	EnderecoRepository enderecoRepository;
 
-	
-	
+	@Value("#{T(java.time.LocalDate).now()}")
+	private LocalDate currentDate;
+
 	private Logger logger = Logger.getLogger(ContaServices.class.getName());
 
 	public List<ContaDTO> findAll() {
@@ -69,13 +72,13 @@ public class ContaServices {
 		}
 	}
 
-	public ContaDTO associarContaAcliente(Long id, ContaDTO contaDTO) throws Exception {
+	public ContaDTO associarContaAendereco(Long enderecoId, ContaDTO contaDTO) throws Exception {
 		logger.info("Associting Conta TO Cliente");
 		var entidadeConta = MyMapper.parseObject(contaDTO, Conta.class);
-		var cliente = repository.findById(id);
-		if (cliente.isPresent() && entidadeConta != null) {
-			cliente.get().getEndereco().setConta(entidadeConta);
-			repository.save(cliente.get());
+		var endereco = enderecoRepository.findById(enderecoId);
+		if (endereco.isPresent() && entidadeConta != null) {
+		    endereco.get().setConta(entidadeConta);
+			enderecoRepository.save(endereco.get());
 			repository.save(entidadeConta);
 			var dto = MyMapper.parseObject(entidadeConta, ContaDTO.class);
 			return dto;
@@ -83,18 +86,40 @@ public class ContaServices {
 			throw new Exception("Algo deu errado!");
 		}
 	}
-	
-	public ContaDTO calcularJurosConta() {
+	public ContaDTO calcularJurosConta(Long medidorId, Long contaId) {
+        var medidorOptional = medidorRepository.findById(medidorId);
+        var contaOptional = repository.findById(contaId);
+
+        if (medidorOptional.isPresent() && contaOptional.isPresent()) {
+            var medidor = medidorOptional.get();
+            var conta = contaOptional.get();
+
+            if (conta.getDataDeVencimento().isBefore(currentDate)) {
+                // Calcula a diferença em dias usando ChronoUnit
+                long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), currentDate);
+
+                // Aplica uma taxa de juros de 1% ao dia
+                double taxaJuros = 0.01;
+                double juros = medidor.getTotalPrecoPorHora() * taxaJuros * diasAtraso;
+
+                // Adiciona os juros ao preço total da conta
+                conta.setPrecoTotal(conta.getPrecoTotal() + juros);
+
+                // Salva as alterações
+                repository.save(conta);
+            }
+
+            return MyMapper.parseObject(conta, ContaDTO.class);
+        }
+
+        return null;
+    }
+	public List<ContaDTO> restaurarHistoricoConta() {
 		return null;
 	}
-	
-	public ContaDTO restaurarHistoricoConta() {
-		return null;
-	}
-	
+
 	public ContaDTO fecharContaEmAberto() {
 		return null;
 	}
-	
 
 }

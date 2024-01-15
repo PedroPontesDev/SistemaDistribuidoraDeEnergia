@@ -32,13 +32,14 @@ public class Endereco {
 	@Column(nullable = true, length = 50)
 	private String complemento;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	
+	@OneToOne
 	private Cliente cliente;
 
-	@OneToOne(mappedBy = "endereco", cascade = CascadeType.ALL)
+	@OneToOne
 	private MedidorEnergia medidor;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	private Conta conta;
 
 	private boolean temUmaConta;

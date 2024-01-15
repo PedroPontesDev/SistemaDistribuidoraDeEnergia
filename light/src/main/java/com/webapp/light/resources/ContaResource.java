@@ -46,7 +46,7 @@ public class ContaResource {
 	
 	@PostMapping(path = "/cliente/{id}/associarConta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
 	public ResponseEntity<ContaDTO> associarContaCliente(@PathVariable Long id, ContaDTO conta) throws Exception {
-            ContaDTO entity = contaService.associarContaAcliente(id, conta);
+            ContaDTO entity = contaService.associarContaAendereco(id, conta);
             return ResponseEntity.ok().body(entity);
 	}
 	
@@ -65,7 +65,7 @@ public class ContaResource {
 		return null;
 	}
 	
-	public ResponseEntity<ContaDTO> calcularJurosConta() {
+	public ResponseEntity<ContaDTO> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
 		return null;
 	}
 	

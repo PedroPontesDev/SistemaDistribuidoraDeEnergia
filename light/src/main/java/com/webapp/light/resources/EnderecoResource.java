@@ -44,7 +44,7 @@ public class EnderecoResource {
 		return new ResponseEntity<>(end, HttpStatus.OK);
 	}
 
-	@PostMapping(path = "/cadastrarEndereco")
+	@PostMapping(path = "/cadastrar-endereco")
 	public ResponseEntity<EnderecoDTO> createEndereco(@RequestBody EnderecoDTO enderecoDTO) {
 		EnderecoDTO createdEndereco = enderecoService.createEndereco(enderecoDTO);
 		return new ResponseEntity<>(createdEndereco, HttpStatus.CREATED);
@@ -58,8 +58,8 @@ public class EnderecoResource {
 
 
 	@PostMapping("{clienteId}/associar-endereco")
-	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @RequestBody Endereco novoEndereco) {
-		enderecoService.associarEndereco(clienteId, novoEndereco);
+	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @PathVariable Long enderecoId) throws Exception {
+		enderecoService.associarEndereco(clienteId, enderecoId);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");
 	}
 	

@@ -71,16 +71,25 @@ public class EnderecoServices {
 		throw new Exception("Error!");
 	}
 
-	public void associarEndereco(Long clientId, Endereco endereco) {
+	public void associarEndereco(Long clientId, Long enderecoId) throws Exception {
 		logger.info("Associating address!");
 		Optional<Cliente> clienteExistente = clienteRepository.findById(clientId);
-		if (clienteExistente.isPresent()) {
-			// Salvo o novo endereço no banco de dados
-			repository.save(endereco);
-			// Associo o novo endereço ao cliente existente
-			clienteExistente.get().setEndereco(endereco);
-			// Atualizo o cliente no banco de dados para refletir a associação com o novo endereço
-			clienteRepository.save(clienteExistente.get());
+		Optional<Endereco> enderecoEntity = repository.findById(enderecoId);
+		if (clienteExistente.isPresent() && enderecoEntity.isPresent()) {
+			try {
+				Cliente cliente = clienteExistente.get();
+				Endereco endereco = enderecoEntity.get();
+				if(endereco.getCliente() != null) {
+					throw new Exception("Endereço já associado a um cliente");
+				}
+				cliente.setEndereco(endereco);
+				clienteRepository.save(cliente);
+				logger.info("Cliente associado com sucesso!");
+
+			} catch (Exception e) {
+               throw new Exception("Não foi possivel associar endereco a cliente");
+			}
+
 		}
 	}
 

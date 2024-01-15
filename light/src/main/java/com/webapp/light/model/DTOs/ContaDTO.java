@@ -27,6 +27,10 @@ public class ContaDTO implements Serializable {
 		this.precoTotal = precoTotal;
 	}
 
+	public ContaDTO() {
+		
+	}
+	
 	public LocalDate getDataDeVencimento() {
 		return dataDeVencimento;
 	}

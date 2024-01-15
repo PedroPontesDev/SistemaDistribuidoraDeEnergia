@@ -30,8 +30,8 @@ public class Cliente extends Usuario {
 	@Column(name = "email", nullable = true, length = 50)
 	private String email;
 
-	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
-	private Endereco endereco;
+	@OneToOne(mappedBy = "cliente")
+	private Endereco end;
 
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
 		super(id, username, password, email, endereco);
@@ -39,7 +39,7 @@ public class Cliente extends Usuario {
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.endereco = endereco;
+		this.end = endereco;
 	}
 
 	public Cliente() {
@@ -70,11 +70,11 @@ public class Cliente extends Usuario {
 	}
 
 	public Endereco getEndereco() {
-		return endereco;
+		return end;
 	}
 
 	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+		this.end = endereco;
 	}
 
 	public Long getId() {
@@ -85,7 +85,7 @@ public class Cliente extends Usuario {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(endereco, id);
+		result = prime * result + Objects.hash(end, id);
 		return result;
 	}
 
@@ -98,13 +98,13 @@ public class Cliente extends Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Cliente other = (Cliente) obj;
-		return Objects.equals(endereco, other.endereco) && Objects.equals(id, other.id);
+		return Objects.equals(end, other.end) && Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email
-				+ ", endereco=" + endereco + "]";
+				+ ", endereco=" + end + "]";
 	}
 
 }
