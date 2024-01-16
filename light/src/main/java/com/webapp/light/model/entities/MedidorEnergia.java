@@ -29,7 +29,8 @@ public class MedidorEnergia implements Serializable {
     @Column
     private Double totalPrecoPorHora;
 	
-	@OneToOne(mappedBy = "medidor")
+    @JsonIgnore
+	@OneToOne
     private Endereco endereco;
 
 	

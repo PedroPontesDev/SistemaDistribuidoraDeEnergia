@@ -19,22 +19,28 @@ public class MedidorDTO implements Serializable {
 	private Double preco;
 	private Double hora;
 	private Double totalPrecoPorHora;
-	private Endereco endereco;
 
-	public MedidorDTO(Long id, Double preco, Double hora, Double totalPrecoPorHora, Endereco endereco) {
+	public MedidorDTO(Long id, Double preco, Double hora, Double totalPrecoPorHora) {
 		this.id = id;
 		this.preco = preco;
 		this.hora = hora;
 		this.totalPrecoPorHora = totalPrecoPorHora;
-		this.endereco = endereco;
 	}
 
 	public MedidorDTO() {
-		
+
 	}
 
 	public Double getPreco() {
 		return preco;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setPreco(Double preco) {
@@ -57,18 +63,6 @@ public class MedidorDTO implements Serializable {
 		this.totalPrecoPorHora = totalPrecoPorHora;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -89,9 +83,7 @@ public class MedidorDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "MedidorDTO [id=" + id + ", preco=" + preco + ", hora=" + hora + ", totalPrecoPorHora="
-				+ totalPrecoPorHora + ", endereco=" + endereco + "]";
+				+ totalPrecoPorHora + ", endereco=";
 	}
-	
-	
 
 }

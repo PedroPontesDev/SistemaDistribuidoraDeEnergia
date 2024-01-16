@@ -65,6 +65,7 @@ public class ContaResource {
 		return null;
 	}
 	
+	@Post
 	public ResponseEntity<ContaDTO> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
 		return null;
 	}

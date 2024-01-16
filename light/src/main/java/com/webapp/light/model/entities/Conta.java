@@ -34,6 +34,7 @@ public class Conta implements Serializable {
 	@Column
 	private Double precoTotal;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "conta")
 	private Endereco endereco;
 

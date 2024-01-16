@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp.light.model.DTOs.ContaDTO;
 import com.webapp.light.model.DTOs.MedidorDTO;
-import com.webapp.light.model.mapper.MyMapper;
-import com.webapp.light.services.ContaServices;
 import com.webapp.light.services.MedidorServices;
 
 @RestController
-@RequestMapping(path = "/clientes/medidor")
+@RequestMapping(path = "/medidor")
 public class MedidorResource {
 
 	@Autowired
@@ -43,7 +41,7 @@ public class MedidorResource {
 	@PostMapping(path = "/criarMedidor")
 	public ResponseEntity<MedidorDTO> criarMedidor(@RequestBody MedidorDTO medidor) {
 		medidorService.criarMedidorDTO(medidor);
-        return null;
+		return ResponseEntity.ok().body(medidor);
 	}
 
 	@PutMapping(path = "/atualizarMedidor")
@@ -57,12 +55,18 @@ public class MedidorResource {
 		return ResponseEntity.noContent().build();
 	}
 
-	public ResponseEntity<ContaDTO> associarMedidorEndereco(@PathVariable Long enderecoId, 	@PathVariable Long medidorId) {
-		return null;
+	@PostMapping(path = "/{enderecoId}/{medidorId}/associar-medidor")
+	public ResponseEntity<String> associarMedidorEndereco(@PathVariable Long enderecoId, @PathVariable Long medidorId)
+			throws Exception {
+		medidorService.associarMedidorEndereco(medidorId, enderecoId);
+		return ResponseEntity.ok("Medidor Associado A Endereco!");
+
 	}
 
-	public ResponseEntity<ContaDTO> calcularConsumoEndereco() {
-		return null;
-	}
+	@PostMapping(path = "/calcular-consumo")
+	public ResponseEntity<MedidorDTO> calcularConsumoEndereco(@RequestBody MedidorDTO medidor) throws Exception {
+		MedidorDTO medidorEntity = medidorService.calcularConsumo(medidor);
+		return ResponseEntity.ok().body(medidorEntity);
 
+	}
 }
