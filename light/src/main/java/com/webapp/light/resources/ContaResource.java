@@ -38,24 +38,24 @@ public class ContaResource {
 
 	}
 
-	@PostMapping(path = "/criarConta")
+	@PostMapping(path = "/emitir-conta")
 	public ResponseEntity<ContaDTO> criarConta(@RequestBody ContaDTO contaDTO) {
 		ContaDTO created = contaService.criarConta(contaDTO);
 		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 	
-	@PostMapping(path = "/cliente/{id}/associarConta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
+	@PostMapping(path = "/cliente/{id}/associar-conta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
 	public ResponseEntity<String> associarContaCliente(@PathVariable Long id, Long contaId) throws Exception {
             contaService.associarContaAendereco(id, contaId);
             return ResponseEntity.ok("Nova conta associada a endereco com sucesso!");
 	}
 	
-	@PutMapping (path = "/atualizarConta")
+	@PutMapping (path = "/atualizar-conta")
 	public ResponseEntity<ContaDTO> atualizarConta(@RequestBody ContaDTO  contaDTO) throws Exception  {
 		return ResponseEntity.ok().body(contaDTO);
 	}
 	
-	@DeleteMapping(value = "/deletarConta")
+	@DeleteMapping(value = "/deletar-conta")
 	public ResponseEntity<?>deletarContaDTO(@PathVariable Long id)  {
 		contaService.delete(id);
 	    return ResponseEntity.noContent().build();
@@ -65,7 +65,7 @@ public class ContaResource {
 		return null;
 	}
 	
-	@Post
+	@PostMapping
 	public ResponseEntity<ContaDTO> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
 		return null;
 	}

@@ -45,9 +45,10 @@ public class MedidorServices {
 		logger.info("Updating medidorDTO");
 		try {
 			var entity = repository.findById(medidorDTO.getId()); // Atualizo
-			// entity.get().setEndereco(medidorDTO.getEndereco());
-			// entity.get().setDataDeVencimento(medidorDTO.getDataDeVencimento());
-			repository.save(entity.get()); // Salvo
+			entity.get().setHora(medidorDTO.getHora());
+			entity.get().setPreco(medidorDTO.getPreco());
+			entity.get().setTotalPrecoPorHora(medidorDTO.getTotalPrecoPorHora());
+			repository.save(entity.get());
 			return MyMapper.parseObject(entity, MedidorDTO.class); // Converto e retorno
 
 		} catch (NoSuchElementException ex) {
@@ -74,7 +75,6 @@ public class MedidorServices {
 			medidor.setEndereco(end);
 			enderecoRepository.save(end);
 			repository.save(medidor);
-			
 
 		} else {
 			throw new Exception("Algo deu errado!");
@@ -83,17 +83,20 @@ public class MedidorServices {
 
 	public MedidorDTO calcularConsumo(MedidorDTO medidorDTO) throws Exception {
 		var medidorr = repository.findById(medidorDTO.getId());
-	    if (medidorr.isPresent()) {
-	        MedidorEnergia medidor = medidorr.get();
-	        medidor.setPreco(medidorDTO.getPreco());
-	        medidor.setHora(medidorDTO.getHora());
-	        Double calculo = medidorDTO.getPreco() + medidorDTO.getHora();
-	        medidor.setTotalPrecoPorHora(calculo);
-	        repository.save(medidor);
-	        return MyMapper.parseObject(medidor, MedidorDTO.class);
-	    } else {
-	        throw new Exception("Algo deu errado!");
-	    }
+		if (medidorr.isPresent()) {
+			MedidorEnergia medidor = medidorr.get();
+			// Certifique-se de que o preço está em reais (divida por 100 se estiver em centavos)
+			Double precoEmReais = medidorDTO.getPreco() / 100.0;
+			medidor.setPreco(precoEmReais);
+			medidor.setHora(medidorDTO.getHora());
+			// Cálculo do custo total em reais
+			Double calculo = precoEmReais * medidorDTO.getHora();
+			medidor.setTotalPrecoPorHora(calculo);
+			repository.save(medidor);
+			return MyMapper.parseObject(medidor, MedidorDTO.class);
+		} else {
+			throw new Exception("Algo deu errado!");
+		}
 	}
 
 }

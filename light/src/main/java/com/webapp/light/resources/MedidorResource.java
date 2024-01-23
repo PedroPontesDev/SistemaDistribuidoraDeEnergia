@@ -38,19 +38,19 @@ public class MedidorResource {
 
 	}
 
-	@PostMapping(path = "/criarMedidor")
+	@PostMapping(path = "/criar-medidor")
 	public ResponseEntity<MedidorDTO> criarMedidor(@RequestBody MedidorDTO medidor) {
 		medidorService.criarMedidorDTO(medidor);
 		return ResponseEntity.ok().body(medidor);
 	}
 
-	@PutMapping(path = "/atualizarMedidor")
-	public ResponseEntity<MedidorDTO> updatePersonDTO(@RequestBody MedidorDTO medidor) throws Exception {
+	@PutMapping(path = "/atualizar-medidor")
+	public ResponseEntity<MedidorDTO> updateMedidor(@RequestBody MedidorDTO medidor) throws Exception {
 		return ResponseEntity.ok().body(medidor);
 	}
 
-	@DeleteMapping(value = "/deletarMedidor")
-	public ResponseEntity<?> deletePersonDTO(@PathVariable Long id) {
+	@DeleteMapping(value = "/deletar-medidor")
+	public ResponseEntity<?> deleteMedidor(@PathVariable Long id) {
 		medidorService.delete(id);
 		return ResponseEntity.noContent().build();
 	}

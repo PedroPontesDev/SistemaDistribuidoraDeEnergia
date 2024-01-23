@@ -18,6 +18,10 @@ public class ContaDTO implements Serializable {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataDeVencimento;
+	
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate dataDeEmissao;
 
 	public ContaDTO(Long id, LocalDate dataDeVencimento, boolean estaEmAberto, Double precoTotal) {
 		this.id = id;

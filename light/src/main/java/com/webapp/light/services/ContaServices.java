@@ -94,11 +94,9 @@ public class ContaServices {
             var conta = contaOptional.get();
             if (conta.getDataDeVencimento().isAfter(currentDate)) {
                 long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), currentDate);
-
                 // Aplica uma taxa de juros de 1% ao dia
                 double taxaJuros = 0.01;
                 double juros = medidor.getTotalPrecoPorHora() * taxaJuros * diasAtraso;
-
                 // Adiciona os juros ao preço total da conta
                 conta.setPrecoTotal(conta.getPrecoTotal() + juros);
 
