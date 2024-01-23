@@ -47,18 +47,18 @@ public class ClienteResource {
 
 	}
 
-	@PostMapping(path = "/cadastrarUsuario")
+	@PostMapping(path = "/cadastrar-usuario")
 	public ResponseEntity<ClienteDTO> createCliente(@RequestBody ClienteDTO clienteDTO) {
 		ClienteDTO createdCliente = clienteService.createCliente(clienteDTO);
 		return new ResponseEntity<>(createdCliente, HttpStatus.CREATED);
 	}
 
-	@PutMapping(path = "/atualizarCadastro")
+	@PutMapping(path = "/atualizar-cadastro")
 	public ResponseEntity<ClienteDTO> updatePersonDTO(@RequestBody ClienteDTO clienteDTO) throws Exception {
 		return ResponseEntity.ok().body(clienteDTO);
 	}
 
-	@DeleteMapping(value = "/deletarCadastro")
+	@DeleteMapping(value = "/deletar-cadastro")
 	public ResponseEntity<?> deletePersonDTO(@PathVariable Long id) {
 		clienteService.delete(id);
 		return ResponseEntity.noContent().build();

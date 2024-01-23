@@ -50,7 +50,7 @@ public class EnderecoResource {
 		return new ResponseEntity<>(createdEndereco, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/atualizarEndereco")
+	@PutMapping("/atualizar-endereco")
 	public ResponseEntity<EnderecoDTO> updateEndereco(@RequestBody EnderecoDTO enderecoDTO) throws Exception {
 		var end = enderecoService.updateEndereco(enderecoDTO);
 		return ResponseEntity.ok().body(end);
