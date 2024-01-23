@@ -49,23 +49,30 @@ public class EnderecoResource {
 		EnderecoDTO createdEndereco = enderecoService.createEndereco(enderecoDTO);
 		return new ResponseEntity<>(createdEndereco, HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/atualizar-endereco")
 	public ResponseEntity<EnderecoDTO> updateEndereco(@RequestBody EnderecoDTO enderecoDTO) throws Exception {
 		var end = enderecoService.updateEndereco(enderecoDTO);
 		return ResponseEntity.ok().body(end);
 	}
 
-
-	@PostMapping("{clienteId}/{enderecoId}/associar-endereco/")
-	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @PathVariable Long enderecoId) throws Exception {
+	@PostMapping("{clienteId}/{enderecoId}/associar-endereco")
+	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @PathVariable Long enderecoId)
+			throws Exception {
 		enderecoService.associarEndereco(clienteId, enderecoId);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");
 	}
-	
+
 	@DeleteMapping(path = "{id}/deletarEndereco")
-     public ResponseEntity<?>deletePersonDTO(@PathVariable Long id)  {
+	public ResponseEntity<?> deletePersonDTO(@PathVariable Long id) {
 		enderecoService.delete(id);
-	    return ResponseEntity.ok("Deletado com succeso");
+		return ResponseEntity.ok("Deletado com succeso");
 	}
+
+	@PostMapping("{medidorId}/{enderecoId}/associar-medidor")
+	public ResponseEntity<String> associarMedidorEndereco(@PathVariable Long medidorId, @PathVariable Long enderecoId) throws Exception {
+		enderecoService.associarMedidor(medidorId, enderecoId);
+		return ResponseEntity.ok("Novo medidor associado a endereco!");
+	}
+
 }

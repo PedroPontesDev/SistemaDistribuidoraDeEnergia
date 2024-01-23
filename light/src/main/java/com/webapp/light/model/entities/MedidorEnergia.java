@@ -30,7 +30,7 @@ public class MedidorEnergia implements Serializable {
     private Double totalPrecoPorHora;
 	
     @JsonIgnore
-	@OneToOne
+	@OneToOne(mappedBy = "medidor")
     private Endereco endereco;
 
 	

@@ -30,9 +30,6 @@ public class ContaServices {
 	@Autowired
 	EnderecoRepository enderecoRepository;
 
-	@Value("#{T(java.time.LocalDate).now()}")
-	private LocalDate currentDate;
-
 	private Logger logger = Logger.getLogger(ContaServices.class.getName());
 
 	public List<ContaDTO> findAll() {
@@ -92,8 +89,8 @@ public class ContaServices {
         if (medidorOptional.isPresent() && contaOptional.isPresent()) {
             var medidor = medidorOptional.get();
             var conta = contaOptional.get();
-            if (conta.getDataDeVencimento().isAfter(currentDate)) {
-                long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), currentDate);
+            if (conta.getDataDeVencimento().isAfter(conta.getDataDeEmissao())) {
+                long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), conta.getDataDeEmissao());
                 // Aplica uma taxa de juros de 1% ao dia
                 double taxaJuros = 0.01;
                 double juros = medidor.getTotalPrecoPorHora() * taxaJuros * diasAtraso;

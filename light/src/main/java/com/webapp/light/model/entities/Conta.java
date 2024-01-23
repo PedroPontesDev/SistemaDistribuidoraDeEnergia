@@ -29,6 +29,10 @@ public class Conta implements Serializable {
 
 	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dataDeVencimento;
+	
+	@JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate dataDeEmissao;
+	
 	private boolean estaEmAberto;
 
 	@Column
@@ -57,6 +61,20 @@ public class Conta implements Serializable {
 	public void setDataDeVencimento(LocalDate dataDeVencimento) {
 		this.dataDeVencimento = dataDeVencimento;
 	}
+	
+	
+
+	public LocalDate getDataDeEmissao() {
+		return dataDeEmissao;
+	}
+
+	public void setDataDeEmissao(LocalDate dataDeEmissao) {
+		this.dataDeEmissao = dataDeEmissao;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public boolean EstaEmAberto() {
 		return estaEmAberto;
@@ -64,6 +82,15 @@ public class Conta implements Serializable {
 
 	public void setEstaEmAberto(boolean estaEmAberto) {
 		this.estaEmAberto = estaEmAberto;
+	}
+	
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	public Long getId() {
@@ -99,14 +126,6 @@ public class Conta implements Serializable {
 	public String toString() {
 		return "Conta [id=" + id + ", dataDeVencimento=" + dataDeVencimento + ", estaEmAberto=" + estaEmAberto
 				+ ", contador=" + "]";
-	}
-
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
 	}
 
 }

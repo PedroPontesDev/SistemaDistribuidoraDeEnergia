@@ -82,20 +82,25 @@ public class MedidorServices {
 	}
 
 	public MedidorDTO calcularConsumo(MedidorDTO medidorDTO) throws Exception {
-		var medidorr = repository.findById(medidorDTO.getId());
-		if (medidorr.isPresent()) {
-			MedidorEnergia medidor = medidorr.get();
-			// Certifique-se de que o preço está em reais (divida por 100 se estiver em centavos)
-			Double precoEmReais = medidorDTO.getPreco() / 100.0;
-			medidor.setPreco(precoEmReais);
-			medidor.setHora(medidorDTO.getHora());
-			// Cálculo do custo total em reais
-			Double calculo = precoEmReais * medidorDTO.getHora();
-			medidor.setTotalPrecoPorHora(calculo);
-			repository.save(medidor);
-			return MyMapper.parseObject(medidor, MedidorDTO.class);
-		} else {
-			throw new Exception("Algo deu errado!");
+		try {
+			var medidorr = repository.findById(medidorDTO.getId());
+			if (medidorr.isPresent()) {
+				MedidorEnergia medidor = medidorr.get();
+
+				Double precoEmReais = 0.85;
+				medidor.setPreco(precoEmReais);
+				medidor.setHora(medidorDTO.getHora());
+				Double calculo = medidorDTO.getPreco() * medidorDTO.getHora();
+				medidor.setTotalPrecoPorHora(calculo);
+				repository.save(medidor);
+				return MyMapper.parseObject(medidor, MedidorDTO.class);
+			} else {
+				throw new NoSuchElementException("Medidor not found");
+			}
+		} catch (Exception ex) {
+			// Registre a exceção ou imprima detalhes para ajudar a diagnosticar o problema
+			ex.printStackTrace();
+			throw new Exception("Erro ao calcular o consumo", ex);
 		}
 	}
 

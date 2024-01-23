@@ -11,15 +11,20 @@ import com.webapp.light.model.DTOs.ClienteDTO;
 import com.webapp.light.model.DTOs.EnderecoDTO;
 import com.webapp.light.model.entities.Cliente;
 import com.webapp.light.model.entities.Endereco;
+import com.webapp.light.model.entities.MedidorEnergia;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ClienteRepository;
 import com.webapp.light.repositories.EnderecoRepository;
+import com.webapp.light.repositories.MedidorRepository;
 
 @Service
 public class EnderecoServices {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
+
+	@Autowired
+	private MedidorRepository medidorRepository;
 
 	@Autowired
 	private EnderecoRepository repository;
@@ -59,7 +64,7 @@ public class EnderecoServices {
 		logger.info("Update EnderecoDTO!");
 		var entidade = repository.findById(dto.getId());
 		if (entidade.isPresent()) {
-			entidade.get().setCliente(dto.getCliente());
+			// entidade.get().setCliente(dto.getCliente());
 			entidade.get().setRua(dto.getRua());
 			entidade.get().setNumero(dto.getNumero());
 			entidade.get().setTemUmaConta(dto.isTemUmaConta());
@@ -79,19 +84,38 @@ public class EnderecoServices {
 			try {
 				Cliente cliente = clienteExistente.get();
 				Endereco endereco = enderecoEntity.get();
-				if(endereco.getCliente() != null) {
+				if (endereco.getCliente() != null) {
 					throw new Exception("Endereço já associado a um cliente");
 				}
 				cliente.setEndereco(endereco);
 				endereco.setCliente(cliente);
 				clienteRepository.save(cliente);
-                repository.save(endereco);
+				repository.save(endereco);
 				logger.info("Cliente associado com sucesso!");
 
 			} catch (Exception e) {
-               throw new Exception("Não foi possivel associar endereco a cliente");
+				throw new Exception("Não foi possivel associar endereco a cliente");
 			}
 
+		}
+	}
+
+	public void associarMedidor(Long medidorId, Long enderecoId) throws Exception {
+		logger.info("Associating medidor!");
+		Optional<MedidorEnergia> medidorExistente = medidorRepository.findById(medidorId);
+		Optional<Endereco> enderecoExistente = repository.findById(enderecoId);
+		if (enderecoExistente.isPresent() && medidorExistente.isPresent()) {
+			MedidorEnergia medidor = medidorExistente.get();
+			Endereco endereco = enderecoExistente.get();
+			if (endereco.getMedidor() == null) {
+				endereco.setMedidor(medidor);
+				medidor.setEndereco(endereco);
+				medidorRepository.save(medidor);
+				repository.save(endereco);
+			} else {
+				throw new Exception("Medidor já existe no endereço!");
+
+			}
 		}
 	}
 

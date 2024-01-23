@@ -16,7 +16,7 @@ public class EnderecoDTO implements Serializable {
 	private String complemento;
 	private boolean temUmaConta;
 
-	private Cliente cliente;
+    private Long clienteId;
 	private Conta conta;
 	private MedidorEnergia medidor;
 
@@ -27,7 +27,7 @@ public class EnderecoDTO implements Serializable {
 		this.numero = numero;
 		this.complemento = complemento;
 		this.temUmaConta = temUmaConta;
-		this.cliente = cliente;
+		this.setClienteId(cliente.getId());
 		this.conta = conta;
 		this.medidor = medidor;
 	}
@@ -72,13 +72,28 @@ public class EnderecoDTO implements Serializable {
 		return id;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Conta getConta() {
+		return conta;
+	}
+	
+	
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
+
+	public Long getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	}
+
 
 	public MedidorEnergia getMedidor() {
 		return medidor;
@@ -111,12 +126,5 @@ public class EnderecoDTO implements Serializable {
 				+ ", temUmaConta=" + temUmaConta + "]";
 	}
 
-	public Conta getConta() {
-		return conta;
-	}
-
-	public void setConta(Conta conta) {
-		this.conta = conta;
-	}
 
 }

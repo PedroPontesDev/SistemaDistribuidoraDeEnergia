@@ -37,7 +37,8 @@ public class Endereco {
 	@JsonIgnore
 	private Cliente cliente;
 
-	@OneToOne(mappedBy = "endereco")
+	@OneToOne
+    @JoinColumn(name = "medidor_id")
 	private MedidorEnergia medidor;
 
 	@OneToOne
