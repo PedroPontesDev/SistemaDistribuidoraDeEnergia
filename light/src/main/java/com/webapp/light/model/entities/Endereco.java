@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,38 +23,35 @@ public class Endereco {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(nullable = false, length = 100)
+	
 	private String rua;
-	@Column(nullable = false, length = 10)
 	private Integer numero;
-	@Column(nullable = true, length = 50)
 	private String complemento;
 
-	
-	@OneToOne
 	@JsonIgnore
+	@OneToOne
 	private Cliente cliente;
 
 	@OneToOne
-    @JoinColumn(name = "medidor_id")
+	@JoinColumn(name = "medidor_id")
 	private MedidorEnergia medidor;
 
-	@OneToOne
-	@JoinColumn(name = "conta_id")
-	private Conta conta;
+	@JsonIgnore
+	@OneToMany(mappedBy = "endereco")
+	private Set<Conta> conta = new HashSet<>();
 
 	private boolean temUmaConta;
 
-	public Endereco(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente,
-			Conta conta) {
+	public Endereco(Long id, String rua, Integer numero, String complemento, Cliente cliente, MedidorEnergia medidor,
+			Set<Conta> conta, boolean temUmaConta) {
 		this.id = id;
 		this.rua = rua;
 		this.numero = numero;
 		this.complemento = complemento;
-		this.temUmaConta = temUmaConta;
 		this.cliente = cliente;
+		this.medidor = medidor;
 		this.conta = conta;
+		this.temUmaConta = temUmaConta;
 	}
 
 	public Endereco() {
@@ -98,11 +94,13 @@ public class Endereco {
 		return temUmaConta;
 	}
 
-	public Conta getConta() {
+	
+	
+	public Set<Conta> getConta() {
 		return conta;
 	}
 
-	public void setConta(Conta conta) {
+	public void setConta(Set<Conta> conta) {
 		this.conta = conta;
 	}
 

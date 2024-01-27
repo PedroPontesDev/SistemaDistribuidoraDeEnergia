@@ -23,16 +23,13 @@ public class Cliente extends Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "username", nullable = true, length = 50)
 	private String username;
-	@Column(name = "password", nullable = true, length = 50)
 	private String password;
-	@Column(name = "email", nullable = true, length = 50)
 	private String email;
 
 	@OneToOne(mappedBy = "cliente")
 	private Endereco end;
-
+	
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
 		super(id, username, password, email, endereco);
 		this.id = id;

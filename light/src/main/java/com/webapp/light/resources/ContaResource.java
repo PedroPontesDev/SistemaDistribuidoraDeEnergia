@@ -2,6 +2,7 @@ package com.webapp.light.resources;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,8 @@ public class ContaResource {
 	ClienteServices clienteServices;
 
 	@GetMapping
-	public ResponseEntity<List<ContaDTO>> findAllContas() {
-		List<ContaDTO> all = contaService.findAll();
+	public ResponseEntity<Set<ContaDTO>> findAllContas() {
+		Set<ContaDTO> all = contaService.findAll();
 		return ResponseEntity.ok().body(all);
 
 	}
@@ -44,9 +45,9 @@ public class ContaResource {
 		return new ResponseEntity<>(created, HttpStatus.CREATED);
 	}
 	
-	@PostMapping(path = "/cliente/{id}/associar-conta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
-	public ResponseEntity<String> associarContaCliente(@PathVariable Long id, Long contaId) throws Exception {
-            contaService.associarContaAendereco(id, contaId);
+	@PostMapping(path = "/{enderecoId}/{contaId}/associar-conta") //Funcionalidades de contas a clientes ficam em /conta/cliente/
+	public ResponseEntity<String> associarContaEndereco(@PathVariable Long enderecoId, @PathVariable Long contaId) throws Exception {
+            contaService.associarContaAendereco(enderecoId, contaId);
             return ResponseEntity.ok("Nova conta associada a endereco com sucesso!");
 	}
 	
@@ -60,13 +61,15 @@ public class ContaResource {
 		contaService.delete(id);
 	    return ResponseEntity.noContent().build();
 	}
-	
-	public ResponseEntity<ContaDTO> recuperarHistoricoConta() {
-		return null;
+
+	@PostMapping("{medidorId}/{contaId}/calcular-juros")
+	public ResponseEntity<Set<ContaDTO>> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
+		Set<ContaDTO> conta = contaService.calcularJurosContasDoEndereco(medidorId, contaId);
+		return ResponseEntity.ok().body(conta);
 	}
 	
-	@PostMapping
-	public ResponseEntity<ContaDTO> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
+	@GetMapping("{clienteId}/recuperar-historico")
+	public ResponseEntity<Set<ContaDTO>> recuperarHistoricoConta() {
 		return null;
 	}
 	

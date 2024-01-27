@@ -1,11 +1,14 @@
 package com.webapp.light.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Set;
 
-import com.webapp.light.model.DTOs.ClienteDTO;
-import com.webapp.light.model.entities.Cliente;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import com.webapp.light.model.entities.Conta;
 
 public interface ContaRepository extends JpaRepository<Conta, Long>{
-
+	
+    @Query("SELECT c FROM Conta c")
+    Set<Conta> findAllAsSet();
 }

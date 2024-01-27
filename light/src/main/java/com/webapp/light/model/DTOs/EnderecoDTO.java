@@ -1,8 +1,11 @@
 package com.webapp.light.model.DTOs;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.webapp.light.model.entities.Cliente;
 import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.entities.MedidorEnergia;
@@ -16,19 +19,22 @@ public class EnderecoDTO implements Serializable {
 	private String complemento;
 	private boolean temUmaConta;
 
-    private Long clienteId;
-	private Conta conta;
+	private Long clientId;
+
+	@JsonIgnore
+	private Set<Conta> contas = new HashSet<>();
 	private MedidorEnergia medidor;
 
 	public EnderecoDTO(Long id, String rua, Integer numero, String complemento, boolean temUmaConta, Cliente cliente,
-			Conta conta, MedidorEnergia medidor) {
+			Set<Conta> contas, MedidorEnergia medidor) {
+		super();
 		this.id = id;
 		this.rua = rua;
 		this.numero = numero;
 		this.complemento = complemento;
 		this.temUmaConta = temUmaConta;
-		this.setClienteId(cliente.getId());
-		this.conta = conta;
+		this.setClientId(cliente.getId());
+		this.contas = contas;
 		this.medidor = medidor;
 	}
 
@@ -72,28 +78,25 @@ public class EnderecoDTO implements Serializable {
 		return id;
 	}
 
-	public Conta getConta() {
-		return conta;
+	public Long getClientId() {
+		return clientId;
 	}
-	
-	
+
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
+	}
+
+	public Set<Conta> getContas() {
+		return contas;
+	}
+
+	public void setContas(Set<Conta> contas) {
+		this.contas = contas;
+	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public void setConta(Conta conta) {
-		this.conta = conta;
-	}
-
-	public Long getClienteId() {
-		return clienteId;
-	}
-
-	public void setClienteId(Long clienteId) {
-		this.clienteId = clienteId;
-	}
-
 
 	public MedidorEnergia getMedidor() {
 		return medidor;
@@ -125,6 +128,5 @@ public class EnderecoDTO implements Serializable {
 		return "EnderecoDTO [id=" + id + ", rua=" + rua + ", numero=" + numero + ", complemento=" + complemento
 				+ ", temUmaConta=" + temUmaConta + "]";
 	}
-
 
 }

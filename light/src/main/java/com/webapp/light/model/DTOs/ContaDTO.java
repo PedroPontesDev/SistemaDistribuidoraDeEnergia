@@ -20,15 +20,18 @@ public class ContaDTO implements Serializable {
 	private LocalDate dataDeVencimento;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private LocalDate dataDeEmissao;
+	private LocalDate dataDeEmissao = LocalDate.now();
+
+	private Endereco endereco;
 
 	public ContaDTO(Long id, boolean estaEmAberto, Double precoTotal, LocalDate dataDeVencimento,
-			LocalDate dataDeEmissao) {
+			LocalDate dataDeEmissao, Endereco endereco) {
 		this.id = id;
 		this.estaEmAberto = estaEmAberto;
 		this.precoTotal = precoTotal;
 		this.dataDeVencimento = dataDeVencimento;
 		this.dataDeEmissao = dataDeEmissao;
+		this.endereco = endereco;
 	}
 
 	public ContaDTO() {
@@ -43,8 +46,6 @@ public class ContaDTO implements Serializable {
 		this.dataDeVencimento = dataDeVencimento;
 	}
 
-	
-	
 	public LocalDate getDataDeEmissao() {
 		return dataDeEmissao;
 	}
@@ -57,7 +58,9 @@ public class ContaDTO implements Serializable {
 		this.id = id;
 	}
 
-	public boolean EstaEmAberto() {
+    
+	
+	public boolean isEstaEmAberto() {
 		return estaEmAberto;
 	}
 
@@ -71,6 +74,14 @@ public class ContaDTO implements Serializable {
 
 	public Double getPrecoTotal() {
 		return precoTotal;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
 	public void setPrecoTotal(Double precoTotal) {
