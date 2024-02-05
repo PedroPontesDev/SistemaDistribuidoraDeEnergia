@@ -1,16 +1,15 @@
 package com.webapp.light.model.entities;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -29,6 +28,9 @@ public class Cliente extends Usuario {
 
 	@OneToOne(mappedBy = "cliente")
 	private Endereco end;
+	
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+	private Set<Reclamacao> reclamacoes = new HashSet<>();
 	
 	public Cliente(Long id, String username, String password, String email, Endereco endereco) {
 		super(id, username, password, email, endereco);
@@ -76,6 +78,20 @@ public class Cliente extends Usuario {
 
 	public Long getId() {
 		return id;
+	}
+
+	
+	
+	public Endereco getEnd() {
+		return end;
+	}
+
+	public void setEnd(Endereco end) {
+		this.end = end;
+	}
+
+	public Set<Reclamacao> getReclamacoes() {
+		return reclamacoes;
 	}
 
 	@Override

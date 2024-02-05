@@ -1,5 +1,6 @@
 package com.webapp.light.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -7,15 +8,19 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webapp.light.exceptions.ClienteNotFoundException;
 import com.webapp.light.model.DTOs.ClienteDTO;
 import com.webapp.light.model.DTOs.EnderecoDTO;
+import com.webapp.light.model.DTOs.ReclamacaoDTO;
 import com.webapp.light.model.entities.Cliente;
 import com.webapp.light.model.entities.Endereco;
 import com.webapp.light.model.entities.MedidorEnergia;
+import com.webapp.light.model.entities.Reclamacao;
 import com.webapp.light.model.mapper.MyMapper;
 import com.webapp.light.repositories.ClienteRepository;
 import com.webapp.light.repositories.EnderecoRepository;
 import com.webapp.light.repositories.MedidorRepository;
+import com.webapp.light.repositories.ReclamacaoRepository;
 
 @Service
 public class EnderecoServices {
@@ -28,6 +33,9 @@ public class EnderecoServices {
 
 	@Autowired
 	private EnderecoRepository repository;
+
+	@Autowired
+	private ReclamacaoRepository reclamacaoRepository;
 
 	private Logger logger = Logger.getLogger(EnderecoServices.class.getName());
 
@@ -116,6 +124,29 @@ public class EnderecoServices {
 				throw new Exception("Medidor já existe no endereço!");
 
 			}
+		}
+	}
+
+	public ReclamacaoDTO abrirReclamacao(Long clienteId, ReclamacaoDTO reclamacaoDTO) {
+		logger.info("Creating reclamação");
+		var cliente = clienteRepository.findById(clienteId);
+
+		if (cliente.isPresent()) {
+			Cliente client = cliente.get();
+			Reclamacao reclamacao = new Reclamacao();
+			reclamacao.setCliente(client);
+			reclamacao.setTitulo(reclamacaoDTO.getTitulo());
+			reclamacao.setConteudo(reclamacaoDTO.getConteudo());
+			reclamacao.setData(LocalDate.now());
+			
+			client.getReclamacoes().add(reclamacao);
+
+			Reclamacao savedReclamacao = reclamacaoRepository.save(reclamacao);
+	        clienteRepository.save(client);
+
+			return MyMapper.parseObject(savedReclamacao, ReclamacaoDTO.class);
+		} else {
+			throw new ClienteNotFoundException("Cliente não encontrado, verifique e tente novamente");
 		}
 	}
 

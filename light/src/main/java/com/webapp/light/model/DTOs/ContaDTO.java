@@ -20,7 +20,7 @@ public class ContaDTO implements Serializable {
 	private LocalDate dataDeVencimento;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private LocalDate dataDeEmissao = LocalDate.now();
+	private LocalDate dataDeEmissao;
 
 	private Endereco endereco;
 

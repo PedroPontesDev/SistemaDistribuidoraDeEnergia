@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.webapp.light.model.entities.Conta;
 import com.webapp.light.model.entities.Endereco;
+import com.webapp.light.model.entities.Reclamacao;
 
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,6 +16,8 @@ public class ClienteDTO implements Serializable {
 	private String password;
 	private String email;
 	private Endereco endereco;
+	
+	private Set<Reclamacao> reclamacoes = new HashSet<>();
 
 	public ClienteDTO(Long id, String username, String password, String email, Endereco endereco) {
 		this.id = id;
@@ -27,6 +29,16 @@ public class ClienteDTO implements Serializable {
 
 	public ClienteDTO() {
 
+	}
+
+	
+	
+	public Set<Reclamacao> getReclamacoes() {
+		return reclamacoes;
+	}
+
+	public void setReclamacoes(Set<Reclamacao> reclamacoes) {
+		this.reclamacoes = reclamacoes;
 	}
 
 	public String getUsername() {

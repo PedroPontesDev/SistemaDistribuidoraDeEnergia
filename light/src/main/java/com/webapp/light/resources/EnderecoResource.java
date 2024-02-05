@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp.light.model.DTOs.ClienteDTO;
 import com.webapp.light.model.DTOs.EnderecoDTO;
+import com.webapp.light.model.DTOs.ReclamacaoDTO;
 import com.webapp.light.model.entities.Endereco;
 import com.webapp.light.services.ClienteServices;
 import com.webapp.light.services.EnderecoServices;
@@ -56,23 +57,29 @@ public class EnderecoResource {
 		return ResponseEntity.ok().body(end);
 	}
 
-	@PostMapping("{clienteId}/{enderecoId}/associar-endereco")
+	@PostMapping("/{clienteId}/{enderecoId}/associar-endereco")
 	public ResponseEntity<String> associarEndereco(@PathVariable Long clienteId, @PathVariable Long enderecoId)
 			throws Exception {
 		enderecoService.associarEndereco(clienteId, enderecoId);
 		return ResponseEntity.ok("Novo endereço associado ao cliente com sucesso!");
 	}
 
-	@DeleteMapping(path = "{id}/deletarEndereco")
+	@DeleteMapping(path = "/{id}/deletarEndereco")
 	public ResponseEntity<?> deletePersonDTO(@PathVariable Long id) {
 		enderecoService.delete(id);
 		return ResponseEntity.ok("Deletado com succeso");
 	}
 
-	@PostMapping("{medidorId}/{enderecoId}/associar-medidor")
+	@PostMapping("/{medidorId}/{enderecoId}/associar-medidor")
 	public ResponseEntity<String> associarMedidorEndereco(@PathVariable Long medidorId, @PathVariable Long enderecoId) throws Exception {
 		enderecoService.associarMedidor(medidorId, enderecoId);
 		return ResponseEntity.ok("Novo medidor associado a endereco!");
+	}
+	
+	@PostMapping(path = "/{clientId}/reclamacao")
+	public ResponseEntity<ReclamacaoDTO> fazerReclamacaoEndereco(@PathVariable Long clientId, @RequestBody ReclamacaoDTO reclamacao) {
+		ReclamacaoDTO reclamacoes = enderecoService.abrirReclamacao(clientId, reclamacao);
+		return new ResponseEntity<>(reclamacoes, HttpStatus.CREATED);
 	}
 
 }

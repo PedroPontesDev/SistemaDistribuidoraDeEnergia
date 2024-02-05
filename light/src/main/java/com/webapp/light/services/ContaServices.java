@@ -85,7 +85,7 @@ public class ContaServices {
 		}
 	}
 
-	public Set<ContaDTO> calcularJurosContasDoEndereco(Long medidorId, Long enderecoId) {
+	public Set<ContaDTO> calcularJurosContasDoEndereco(Long medidorId, Long enderecoId) throws Exception {
 	    var medidorOptional = medidorRepository.findById(medidorId);
 	    var enderecoOptional = enderecoRepository.findById(enderecoId);
 	    
@@ -99,10 +99,16 @@ public class ContaServices {
 	                long diasAtraso = ChronoUnit.DAYS.between(conta.getDataDeVencimento(), conta.getDataDeEmissao());
 	                // Aplica uma taxa de juros de 1% ao dia
 	                double taxaJuros = 0.05;
-	                double juros = medidor.getTotalPrecoPorHora() + taxaJuros * diasAtraso;
+	                double juros = medidor.getTotalPrecoPorHora() * taxaJuros * diasAtraso;
 	                // Adiciona os juros ao preço total da conta
-	                conta.setPrecoTotal(medidor.getTotalPrecoPorHora() + juros);
+	                conta.setPrecoTotal(conta.getPrecoTotal() + juros);
 	                conta.setEstaEmAberto(true);
+	                // Salva as alterações
+	                repository.save(conta);
+	                contasAtualizadas.add(MyMapper.parseObject(conta, ContaDTO.class));
+	            } else {
+	                // Se a conta não está vencida, mantenha estaEmAberto como false
+	                conta.setEstaEmAberto(false);
 	                // Salva as alterações
 	                repository.save(conta);
 	                contasAtualizadas.add(MyMapper.parseObject(conta, ContaDTO.class));

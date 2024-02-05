@@ -63,7 +63,7 @@ public class ContaResource {
 	}
 
 	@PostMapping("{medidorId}/{contaId}/calcular-juros")
-	public ResponseEntity<Set<ContaDTO>> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) {
+	public ResponseEntity<Set<ContaDTO>> calcularJurosConta(@PathVariable Long medidorId, @PathVariable Long contaId) throws Exception {
 		Set<ContaDTO> conta = contaService.calcularJurosContasDoEndereco(medidorId, contaId);
 		return ResponseEntity.ok().body(conta);
 	}
